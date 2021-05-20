@@ -1,0 +1,17 @@
+<ehcache>
+    <diskStore path="/root/tmpdir"/>
+	<!-- 
+		maxElementsInMemory: Max Elements of Entity
+		eternal: if true the object never expires
+		timeToIdleSeconds: Time to expire after last Access
+		timeToLiveSeconds: Time to expire after created in Cache
+	 -->
+    <defaultCache
+            maxElementsInMemory="500"
+            eternal="false"
+            timeToIdleSeconds="100"
+            timeToLiveSeconds="150"
+            overflowToDisk="false"
+            diskPersistent="true"
+            diskExpiryThreadIntervalSeconds="100" />
+</ehcache>

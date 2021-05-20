@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+    <!-- Database connection settings -->
+        <property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+        <property name="connection.url">jdbc:oracle:thin:@localhost:1521:XE</property>
+        <property name="connection.username">hibernatetest</property>
+        <property name="connection.password">hibernatetest</property>
+
+        <!-- JDBC connection pool (use the built-in) -->
+        <property name="connection.pool_size">5</property>
+
+        <!-- SQL dialect -->
+        <property name="dialect">org.hibernate.dialect.Oracle10gDialect</property>
+
+        <!-- Enable Hibernate's automatic session context management -->
+        <property name="current_session_context_class">thread</property>
+
+        <!-- Enable the second-level cache  -->
+        
+        <!-- reads ehcache.xml from the classpath -->
+        <property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+        <property name="cache.use_query_cache">true</property>
+        <property name="cache.use_second_level_cache">true</property>
+
+        <!-- Echo all executed SQL to stdout -->
+        <property name="show_sql">true</property>
+        
+        <!-- 
+        1. create: Drop and re-create the database schema on startup 
+        2. update: Validate and (if required) Create/Alter the schema on Startup 
+        3. validate: Check the Mappings with schema Structure
+        -->
+        <property name="hbm2ddl.auto">validate</property>
+        <mapping resource="entities/Person.hbm.xml"/>
+        <mapping resource="entities/Account.hbm.xml"/>
+        <mapping resource="entities/Transaction.hbm.xml"/>
+        <mapping resource="entities/Payment.hbm.xml"/>
+    </session-factory>
+
+</hibernate-configuration>
+

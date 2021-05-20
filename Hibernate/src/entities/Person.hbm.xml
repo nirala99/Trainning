@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="entities.Person" table="HIB_PERSON">
+        <id name="personId" column="PERSON_ID">
+	<!-- native[auto-select]: sequence,identity and table -->
+        <!-- hibernate classes : increment -->
+	    <generator class="native"/>
+        </id>
+        <property name="personName" not-null="true" unique="true" length="20"/>
+        <!-- unique="true"  -->
+        <!--  scale="7" precision="2" for number/numeric types -->
+    	<set name="accounts" table="HIB_PERSON_Accounts" lazy="false">
+            <key column="FK_PersonId"/>
+            <many-to-many class="entities.Account" column="FK_AccountId"/>
+        </set>
+    </class>
+</hibernate-mapping>

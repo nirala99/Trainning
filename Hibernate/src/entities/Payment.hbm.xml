@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <!-- S1: SINGLE_TABLE -->
+<!--    <class name="entities.Payment" table="HIB_Payment_S1" discriminator-value="CASH"  >
+        <id name="paymentId" column="Payment_ID">
+            <generator class="native"/>
+        </id>
+
+        <discriminator column="PAYMENT_TYPE" type="string"/>
+        <property name="amount"/>
+        <subclass name="entities.ChequePayment" discriminator-value="CHEQUE">
+            <property name="chequeNumber"/>
+            <property name="bankName"/>
+        </subclass>
+
+        <subclass name="entities.CardPayment" discriminator-value="CARD">
+            <property name="cardNumber"/>
+            <property name="cardType"/>
+        </subclass>
+    </class>-->
+ 
+    <!-- S2: JOINED-->
+<!--    <class name="entities.Payment" table="HIB_Payment_S2">
+        <id name="paymentId" column="Payment_ID">
+            <generator class="native"/>
+        </id>
+        <property name="amount"/>
+        <joined-subclass name="entities.ChequePayment" table="HIB_CHEQUEPAYMENT_S2">
+            <key column="FK_PAYMENTID"/>
+            <property name="chequeNumber"/>
+            <property name="bankName"/>
+        </joined-subclass>
+
+        <joined-subclass name="entities.CardPayment" table="HIB_CARDPAYMENT_S2">
+            <key column="FK_PAYMENTID"/>
+            <property name="cardNumber"/>
+            <property name="cardType"/>
+        </joined-subclass>
+    </class>-->
+ 
+    <!-- S3:TABLE_PER_CLASS -->
+    <class name="entities.Payment" table="HIB_Payment_S3">
+        <id name="paymentId" column="Payment_ID">
+            <generator class="increment"/>
+        </id>
+        <property name="amount"/>
+        <union-subclass name="entities.ChequePayment" table="HIB_CHEQUEPAYMENT_S3">
+            <property name="chequeNumber"/>
+            <property name="bankName"/>
+        </union-subclass>
+
+        <union-subclass name="entities.CardPayment" table="HIB_CARDPAYMENT_S3">
+            <property name="cardNumber"/>
+            <property name="cardType"/>
+        </union-subclass>
+    </class>
+</hibernate-mapping>
