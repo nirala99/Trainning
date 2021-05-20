@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Employee Information</title>
+	<script>
+	
+		function displayName(empno){
+			var XHR =  new ActiveXObject("Microsoft.XMLHTTP");
+					// new XMLHttpRequest();
+					
+			var url = "services/EmployeSystemImplService"
+				+"/findEmployee?employeeNumber="+empno;
+			XHR.open("GET",url,false); // sync
+									   // async = onreadystatechange=displayName
+									   //			4
+			XHR.send();
+			alert(XHR.responseXML.xml);
+			
+			// var obj = eval(XHR.responseText); JSON
+			var returnValue = XHR.responseXML
+				.getElementsByTagName("employeeName")[0];
+			
+			var name = returnValue.text;
+			var empDIV = document.getElementById("empName");
+
+			empDIV.innerHTML= "<h2>Employee name: "+name+"</h2>";			
+		}
+	</script>
+</head>
+<body>
+	<h1> Employee Client</h1>
+	
+	Enter Employee Number : <input id="empno"> 
+	<input type="button" value="Display Name"
+			onclick="displayName(empno.value)">
+			
+	<div id="empName"></div>						
+</body>
+</html>

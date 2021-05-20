@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:svc="http://services/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SimpleWebService" targetNamespace="http://services/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://services/">
+      <xsd:element name="validateCard">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="cardNumber" type="xsd:int" />
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="validateCardResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:boolean"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="validateCardRequest">
+    <wsdl:part element="svc:validateCard" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="validateCardResponse">
+    <wsdl:part element="svc:validateCardResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:portType name="SimpleWebService">
+    <wsdl:operation name="validateCard">
+      <wsdl:input message="svc:validateCardRequest"/>
+      <wsdl:output message="svc:validateCardResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SimpleWebServiceSOAP" type="svc:SimpleWebService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="validateCard">
+      <soap:operation soapAction="http://services/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="HTTPBinding" type="svc:SimpleWebService">
+  	<http:binding verb="GET" />
+  	<wsdl:operation name="validateCard">
+  		<http:operation location="/validateCard" />
+  		<wsdl:input>
+  			<http:urlEncoded />
+  		</wsdl:input>
+  		<wsdl:output>
+  			<mime:content type="text/xml" />
+  		</wsdl:output>
+  	</wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SimpleWebService">
+    <wsdl:port binding="svc:SimpleWebServiceSOAP" name="SimpleWebServiceSOAP">
+      <soap:address location="http://localhost:8180/AxisWSProject/services/SimpleWebService"/>
+    </wsdl:port>
+    <wsdl:port name="HTTPPORT" binding="svc:HTTPBinding">
+    	<http:address location="http://localhost:8180/AxisWSProject/services/SimpleWebService"></http:address>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
