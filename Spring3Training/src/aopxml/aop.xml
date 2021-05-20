@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<!-- <aop:aspectj-autoproxy></aop:aspectj-autoproxy> -->
+
+    <bean id="onlineBank" class="aopxml.OnlineBakImpl"></bean>
+    <bean id="securityAspect" class="aopxml.SecurityAspect"></bean>
+    <bean id="loggingAspect" class="aopxml.LoggingAspect"></bean>
+    <bean id="transactionAspect" class="aopxml.TransactionAspect"></bean>
+    <bean id="fixedDepositAspect" class="aopxml.ApplyInterestRate"></bean>
+
+    <aop:config>
+		<!-- pointcuts -->
+        <aop:pointcut id="securityOperation" expression="execution(* aopxml.Bank.*(int,..))" />
+        <aop:pointcut id="transferOperation" expression="execution(* aopxml.Bank.transfer(..))" />
+        <aop:pointcut id="beforeAfterLogOperation" expression="execution(* aopxml.Bank.*(..))" />
+        <aop:pointcut id="afterReturningOperation" expression="execution(* aopxml.Bank.*(..))" />
+        <aop:pointcut id="fixedDepositOperation" expression="execution(* aopxml.Bank.fixedDeposit(int,double))" />
+
+		<!-- Aspects -->
+        <aop:aspect ref="securityAspect">
+            <aop:before method="performCheck" pointcut-ref="securityOperation" />
+        </aop:aspect>
+        <aop:aspect ref="transactionAspect">
+            <aop:around method="transferTransaction" pointcut-ref="transferOperation" />
+        </aop:aspect>
+        <aop:aspect ref="fixedDepositAspect">
+            <aop:around method="fixedDeposit" pointcut-ref="fixedDepositOperation" />
+        </aop:aspect>
+        <aop:aspect ref="loggingAspect">
+            <aop:before method="logBefore" pointcut-ref="beforeAfterLogOperation" />
+            <aop:after method="logAfter" pointcut-ref="beforeAfterLogOperation" />
+            <aop:after-returning method="logAfterReturning"
+				pointcut-ref="afterReturningOperation" returning="result" />
+            <aop:after-throwing method="logAfterThrowing"
+				pointcut-ref="afterReturningOperation" throwing="e" />
+        </aop:aspect>
+    </aop:config>
+
+</beans>

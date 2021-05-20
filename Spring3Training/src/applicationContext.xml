@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <bean id="empBean" class="collection.Employee">
+        <property name="name" value="Ramesh Pawar" />
+        <property name="projects">
+            <list>
+                <ref bean="lcms" />
+                <ref bean="rms" />
+                <null></null>
+            </list>
+        </property>
+        <property name="phoneNumbers">
+            <list>
+                <value>12345</value>
+                <value>6543</value>
+            </list>
+        </property>
+        <property name="skills">
+            <set>
+                <value>Java</value>
+                <value>J2EE</value>
+                <value>J2EE</value>
+                <null></null>
+                <null></null>
+            </set>
+        </property>
+        <property name="contacts">
+            <set>
+                <bean class="collection.Contact">
+                    <property name="contactName" value="Geeta Pawar"></property>
+                    <property name="contactEmail" value="geetap@abc.com"></property>
+                    <property name="contactNumber" value="925432163"></property>
+                </bean>
+                <bean class="collection.Contact">
+                    <property name="contactName" value="Rajesh Saini"></property>
+                    <property name="contactEmail" value="rsaini@gmail.com"></property>
+                    <property name="contactNumber" value="02050506543"></property>
+                </bean>
+            </set>
+        </property>
+        <property name="ratings">
+            <map>
+                <entry key="2006" value="3.7"></entry>
+                <entry key="2007" value="3.9"></entry>
+                <entry key="2008" value="4.1"></entry>
+            </map>
+        </property>
+        <property name="skillProjects">
+            <map>
+                <entry key="Java">
+                    <list>
+                        <ref bean="lcms" />
+                        <ref bean="rms" />
+                    </list>
+                </entry>
+                <entry key="J2EE">
+                    <list>
+                        <ref bean="lcms" />
+                    </list>
+                </entry>
+            </map>
+        </property>
+        <property name="bands">
+            <props>
+                <prop key="2006">C</prop>
+                <prop key="2007">B</prop>
+                <prop key="2008">A</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="lcms" class="collection.Project">
+        <property name="projectName" value="LCMS"></property>
+        <property name="clientName" value="PSLTraining"></property>
+        <property name="technologyName" value="Java,J2EE"></property>
+    </bean>
+    <bean id="rms" class="collection.Project">
+        <property name="projectName" value="RMS"></property>
+        <property name="clientName" value="PSLRM"></property>
+        <property name="technologyName" value="Java"></property>
+    </bean>
+
+    <!-- Book Configuration -->
+<!--    <bean id="book" class="collection.Book">
+        <property name="name" value="Spring3 in Action"></property>
+        <property name="pages" value="30"> 
+            <list>
+                <ref local="p1" />
+                <ref local="p2" />
+            </list>
+            <bean class="org.springframework.beans.factory.config.SetFactoryBean">
+                <property name="targetSetClass" value="java.util.TreeSet"></property>
+                <property name="sourceSet">
+                    <set>
+                        <ref local="p1" />
+                        <ref local="p2" />
+                    </set>
+                </property>
+            </bean>
+        </property>
+    </bean>-->
+</beans>

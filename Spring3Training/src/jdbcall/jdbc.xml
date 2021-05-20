@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <!-- JDBC DAO -->
+    <bean id="employeeJDBCDAO" class="jdbcall.EmployeeJDBCDAO">
+        <property name="jdbcTemplate" ref="jdbcTemplate"></property>
+    </bean>
+
+    <!-- Named JDBC DAO -->
+    <bean id="namedJdbcEmployeeDAO" class="jdbcall.EmployeeNamedJDBCDAO">
+        <property name="namedParameterJdbcTemplate" ref="namedJdbcTemplate"></property>
+    </bean>
+
+    <!-- Simple Jdbc DAO -->
+    <bean id="employeeJDBCSimpleDAO" class="jdbcall.EmployeeSimpleJDBCDAO">
+        <property name="simpleJdbcTemplate" ref="simpleJdbcTemplate"></property>
+    </bean>
+
+    <!-- JDBC Template -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="mysqlDataSource"></property>
+    </bean>
+
+    <!-- Named Jdbc Template -->
+    <bean id="namedJdbcTemplate"
+		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg name="dataSource" ref="mysqlDataSource"></constructor-arg>
+    </bean>
+
+    <!-- Simple Jdbc Template -->
+    <bean id="simpleJdbcTemplate" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+        <constructor-arg name="dataSource" ref="mysqlDataSource"></constructor-arg>
+    </bean>
+
+    <bean id="mysqlDataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClass}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+    <context:property-placeholder location="jdbc.properties" />
+</beans>
