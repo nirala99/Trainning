@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="example" namespace="/example" extends="struts-default">
+        <!--Result Types -->
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+            <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" />
+        </result-types>
+
+        <!-- Interceptor -->
+        <interceptors>
+            <interceptor name="logger" class="example.LoggerInterceptor" />
+            <interceptor name="hibernateSession" class="example.HibernateSessionInterceptor" />
+            <interceptor-stack name="myStack">
+                <interceptor-ref name="logger" />
+                <interceptor-ref name="defaultStack">
+                    <param name="validation.excludeMethods">input,list</param>
+                    <param name="workflow.excludeMethods">input,list</param>
+                </interceptor-ref>
+                <interceptor-ref name="hibernateSession" />
+            </interceptor-stack>
+        </interceptors>
+
+        <!-- apply stack for all action in package -->
+        <default-interceptor-ref name="myStack" />
+
+        <global-results>
+            <result name="error">/example/Error.jsp</result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping result="error" exception="java.lang.Exception" />
+        </global-exception-mappings>
+	<!-- Action -->
+	<!-- default methos:execute -->
+        <action name="Hello" class="example.HelloAction">
+	<!-- Only logger Interceptor is applied -->
+            <interceptor-ref name="logger"></interceptor-ref>
+            <!-- name:success type:dispatcher -->
+            <result name="success">/example/Summary.jsp</result>
+            <exception-mapping result="error" exception="example.HoliException"></exception-mapping>
+        </action>
+
+        <action name="Login_*" class="example.LoginAction" method="{1}">
+            <interceptor-ref name="myStack"></interceptor-ref>
+            <result name="input">/example/LoginForm.jsp</result>
+            <result>/example/Summary.jsp</result>
+        </action>
+
+        <action name="Employee_*" class="example.EmployeeAction" method="{1}">
+        <!-- Local Exception mapping -->
+            <exception-mapping result="error" exception="org.hibernate.exception.ConstraintViolationException" />
+            <result name="input">/example/EmployeeForm.jsp</result>
+            <result name="list">/example/EmployeeList.jsp</result>
+        </action>
+
+        <action name="HellowRedirect" class="example.HelloAction">
+            <result name="success" type="redirect">/example/Summary.jsp?message=${message}
+            </result>
+        </action>
+
+        <action name="ChainAction" class="example.ActionOne">
+            <result type="chain">ActionTwo</result>
+        </action>
+
+        <action name="ActionTwo" class="example.ActionTwo">
+            <result>/example/Summary.jsp</result>
+        </action>
+
+        <action name="RedirectAction" class="example.ActionOne">
+            <result type="redirectAction">ActionTwo</result>
+        </action>
+
+        <action name="HelloTiles" class="example.HelloAction">
+	<!-- tiles definition name from tiles.xml -->
+            <result type="tiles">summary</result>
+        </action>
+		
+        <action name="EmployeeReport" class="example.EmployeeReportAction">
+            <result type="jasper">
+                <param name="dataSource">employees</param>
+                <param name="format">${format}</param>
+                <param name="location">report/employee_report.jasper</param>
+            </result>
+        </action>
+    </package>
+</struts>
