@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<handler-chains xmlns="http://java.sun.com/xml/ns/javaee">
+	<!--  One or more handler Chains -->
+	<handler-chain>
+		<!-- url pattern -->
+		<service-name-pattern 
+		xmlns:ns1="http://businessservices/">ns1:Empl*</service-name-pattern>
+		
+		<!-- One or more handlers -->
+		<handler>
+			<handler-class>businessservices.MessageLoggingHandler</handler-class>
+		</handler>
+	</handler-chain>
+</handler-chains>
